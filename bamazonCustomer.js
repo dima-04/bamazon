@@ -18,58 +18,50 @@ var db = mysql.createConnection({
   database: "bamazon"
 });
 
-db.connect(function(err) {
+db.connect(function (err) {
   if (err) throw err;
-  start();
   console.log("connected as id " + db.threadId + "\n");
 });
 
 function start() {
-    inquirer
-      .prompt({
-        name: "product",
-        type: "number",
-        message: "what is the Id of the products you would like to order?"
-      })
-      .then(function(answer) {
-        // based on their answer, either call the bid or the post functions
-        if (answer.product === true) {
-         readProducts();
+  inquirer
+    .prompt([{
+      name: "product",
+      type: "number",
+      message: "what is the Id of the products you would like to order?"
+    }, {
+      name: "quantity",
+      type: "input",
+      message: "How many units of the product you would like to buy?"
+
+    }])
+    .then(function (answer) {
+      db.query(" select * from products where item_id=?;", [answer.product], function (err, res) {
+        if (err) throw err;
+
+        if (res[0].stock_quantity<answer.quantity){
+          console.log("Insufficient quantity!");
+        }else{
+          
         }
-        else if(answer.product=== false) {
-          connection.end();
-        }
+        
+        db.end();
       });
-      inquirer
-      .prompt({
-        name: "item",
-        type: "input",
-        message: "How many units of the product you would like to buy?"
-      })
-      .then(function(answer) {
-        // based on their answer, either call the bid or the post functions
-        if (answer.product === true) {
-         readProducts();
-        }
-        else if(answer.product=== false) {
-          connection.end();
-        }
-      });
-  }
-  
+
+    });
+}
+
 
 function readProducts() {
-    console.log("Selecting all products...\n");
-    db.query("SELECT item_id, product_name, price from products;", function(err, res) {
-      if (err) throw err;
-      for (let i=0;i<res.length;i++){
-        console.log(res[i]);
-        console.log("+____________________________________________+");
-      }
-      // Log all results of the SELECT statement
-      
-      db.end();
-    });
+  console.log("Selecting all products...\n");
+  db.query("SELECT item_id, product_name, price from products;", function (err, res) {
+    if (err) throw err;
+    for (let i = 0; i < res.length; i++) {
+      console.log(res[i]);
+      console.log("+____________________________________________+");
+    }
+    start();
+  });
 
 }
 
