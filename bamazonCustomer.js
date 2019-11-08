@@ -39,13 +39,22 @@ function start() {
       db.query(" select * from products where item_id=?;", [answer.product], function (err, res) {
         if (err) throw err;
 
-        if (res[0].stock_quantity<answer.quantity){
+        if (res[0].stock_quantity < answer.quantity) {
           console.log("Insufficient quantity!");
-        }else{
-          
+        } else {
+          db.query("update products set stock_quantity = stock_quantity - ? where item_id = ?", [
+            answer.quantity,
+            answer.product
+          ], function (err, res) {
+            if (err) throw err;
+
+            
+          });
+
+          db.end();
         }
-        
-        db.end();
+
+
       });
 
     });
