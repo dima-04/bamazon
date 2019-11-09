@@ -38,28 +38,26 @@ function start() {
     .then(function (answer) {
       db.query(" select * from products where item_id=?;", [answer.product], function (err, res) {
         if (err) throw err;
+      
+        let price=res[0].price;
 
         if (res[0].stock_quantity < answer.quantity) {
           console.log("Insufficient quantity!");
+          db.end();
         } else {
           db.query("update products set stock_quantity = stock_quantity - ? where item_id = ?", [
             answer.quantity,
             answer.product
           ], function (err, res) {
             if (err) throw err;
+            console.log("Total Cost Of The Purchase: " +price*answer.quantity);
 
-            
-          });
-
-          db.end();
+            db.end();
+          });  
         }
-
-
       });
-
     });
 }
-
 
 function readProducts() {
   console.log("Selecting all products...\n");
