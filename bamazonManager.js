@@ -47,7 +47,8 @@ function executeCommand(answer) {
             break;
 
         case "2.View Low Inventory":
-            //function()
+            lowInventory();
+            break;
 
         case "3.Add to Inventory":
             //function()
@@ -68,6 +69,17 @@ function printProducts(){
         }
 
         db.end();
+});
+}
+function lowInventory(){
+    console.log("Selecting Low Inventory...\n");
+    db.query(" select * from products where stock_quantity<5;", function (err, res) {
+        if (err) throw err;
+        for (let i = 0; i < res.length; i++) {
+            console.log(res[i]);
+            console.log("+____________________________________________+");
+          }
+          db.end();
 });
 }
 printMenu();
