@@ -51,7 +51,7 @@ function executeCommand(answer) {
             break;
 
         case "3.Add to Inventory":
-            //function()
+                addInventoryQuestion();
 
         case "4.Add New Product":
             //function()
@@ -82,6 +82,27 @@ function lowInventory(){
           db.end();
 });
 }
+function addInventoryQuestion() {
+    inquirer
+        .prompt([{
+            name: "item",
+            type: "number",
+            message: "What is product ID?"},
+            {
+                name: "quantity",
+                type: "number",
+                message: "How many units of the product you want to add?"
+          
+        }])
+        .then(addInventory);
+}
+function addInventory(answer) {
+    db.query("Update products SET stock_quantity=stock_quantity+? where item_id= ?;", [answer.quantity,answer.item], function (err, res) {
+      if (err) throw err;
+      printProducts();
+    });
+}
+
 printMenu();
 
 
