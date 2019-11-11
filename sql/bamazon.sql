@@ -37,3 +37,18 @@ INSERT INTO products (product_name,department_name,price,stock_quantity)
 VALUES ("Bread","Bakery",5,10);
 INSERT INTO products (product_name,department_name,price,stock_quantity)
 VALUES ("Eggs","Fridge",7,100);
+
+
+create TABLE departments(
+department_id INTEGER(11) auto_increment not null,
+department_name VARCHAR(30) NOT NULL,
+over_head_costs INTEGER(11) not null,
+  primary key(department_id)
+  );
+
+ALTER TABLE products
+ADD COLUMN product_sales VARCHAR(15) AFTER stock_quantity;
+Update products SET product_sales=0;
+
+
+

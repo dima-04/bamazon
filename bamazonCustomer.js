@@ -46,7 +46,8 @@ function getProductAndUpdateQuantity(answer) {
       console.log("Insufficient quantity!");
       db.end();
     } else {
-      db.query("update products set stock_quantity = stock_quantity - ? where item_id = ?", [
+      db.query("update products set stock_quantity = stock_quantity - ?,product_sales=?*price where item_id = ?", [
+        answer.quantity,
         answer.quantity,
         answer.product
       ], function (err, res) {
