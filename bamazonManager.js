@@ -54,7 +54,8 @@ function executeCommand(answer) {
                 addInventoryQuestion();
 
         case "4.Add New Product":
-            //function()
+            addProduct();
+        
 
     }
 
@@ -102,7 +103,36 @@ function addInventory(answer) {
       printProducts();
     });
 }
+function addProduct(){
+    inquirer
+    .prompt([{
+        name: "product_name",
+        type: "input",
+        message: "What is product name?"},
+     {
+      name: "department_name",
+     type: "input",
+     message: "What is the department_name?"},
+      {
+     name: "price",
+     type: "number",
+    message: "What is price?"},
+     {
+     name: "stock_quantity",
+    type: "number",
+    message: "What is the stock_quantity?"
+      
+    }])
+    .then(addNewProduct);
 
+}
+function addNewProduct(answer) {
+    db.query(" INSERT INTO products (product_name,department_name,price,stock_quantity)"
+    +"VALUES(?,?,?,?);", [answer.product_name,answer.department_name,answer.price,answer.stock_quantity], function (err, res) {
+      if (err) throw err;
+      db.end();
+    });  
+}
 printMenu();
 
 
