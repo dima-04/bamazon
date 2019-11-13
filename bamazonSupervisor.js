@@ -42,15 +42,37 @@ function getProductsByDepartment(answer) {
             break;
 
         case "2. Create New Department":
+           addDepartment();
            
             break;
     }
 }
 function printSalesByDepartment(){
-    db.query("SELECT departments.department_id,departments.department_name,departments.over_head_costs ,SUM(product_sales) AS product_sales, SUM(product_sales)-(over_head_costs) AS total_profit FROM departments INNER JOIN products ON products.department_name = departments.department_name GROUP BY departments.department_id,departments.department_name,departments.over_head_costs ;", function (err, res) {
+    db.query("SELECT departments.department_id,departments.department_name,departments.over_head_costs ,SUM(product_sales) AS product_sales, SUM(product_sales)-(over_head_costs) AS total_profit FROM departments LEFT JOIN products ON products.department_name = departments.department_name GROUP BY departments.department_id,departments.department_name,departments.over_head_costs ;", function (err, res) {
         if (err) throw err;
         console.log(res);
         db.end();
     });
 }
+function addDepartment(){
+    inquirer
+    .prompt([{
+        name: "department_name",
+        type: "input",
+        message: "What is department name?"},
+     {
+      name: "over_head_costs",
+     type: "number",
+     message: "What is the over_head_costs?"
+    }])
+    .then(addNewProduct);
+}
+function addNewProduct(answer){
+db.query(" INSERT INTO departments (department_name,over_head_costs)"
+    +"VALUES(?,?);", [answer.department_name,answer.over_head_costs], function (err, res) {
+      if (err) throw err;
+      printSalesByDepartment();
+    });
+
+}  
 printMenu();
