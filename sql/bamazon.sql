@@ -26,7 +26,7 @@ VALUES ("Baby Shampoo","Baby",15,15);
 INSERT INTO products (product_name,department_name,price,stock_quantity)
 VALUES ("Lotion","Baby",18,5);
 INSERT INTO products (product_name,department_name,price,stock_quantity)
-VALUES ("Baby-Food","Babys",2,50);
+VALUES ("Baby-Food","Baby",2,50);
 INSERT INTO products (product_name,department_name,price,stock_quantity)
 VALUES ("Rash Cream","Baby",6,30);
 INSERT INTO products (product_name,department_name,price,stock_quantity)
@@ -45,10 +45,24 @@ department_name VARCHAR(30) NOT NULL,
 over_head_costs INTEGER(11) not null,
   primary key(department_id)
   );
+  
+  
 
 ALTER TABLE products
 ADD COLUMN product_sales VARCHAR(15) AFTER stock_quantity;
 Update products SET product_sales=0;
 
+INSERT INTO departments (department_name,over_head_costs)
+VALUES ("Baby",10);
+INSERT INTO departments (department_name,over_head_costs)
+VALUES ("Beauty",11);
+INSERT INTO departments (department_name,over_head_costs)
+VALUES ("Fruit",19);
+INSERT INTO departments (department_name,over_head_costs)
+VALUES ("Bakery",15);
+INSERT INTO departments (department_name,over_head_costs)
+VALUES ("Fridge",8);
+
+INSERT INTO departments(department_name,over_head_costs)VALUES("snakes",1);
 
 
