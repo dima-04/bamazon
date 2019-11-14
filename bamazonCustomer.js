@@ -29,7 +29,7 @@ function buyProduct() {
       message: "what is the Id of the products you would like to order?"
     }, {
       name: "quantity",
-      type: "input",
+      type: "number",
       message: "How many units of the product you would like to buy?"
 
     }])

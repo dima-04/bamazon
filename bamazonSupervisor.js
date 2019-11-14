@@ -20,8 +20,6 @@ db.connect(function (err) {
     console.log("connected as id " + db.threadId + "\n");
 });
 function printMenu() {
-    console.log("1. View Products for Sale by Department");
-    console.log("2. Create New Department");
     selectOption();
 }
 function selectOption() {
@@ -32,9 +30,9 @@ function selectOption() {
             message: "What do you like to do?",
             choices: ["1. View Product Sales by Department", "2. Create New Department"]
         }])
-        .then(getProductsByDepartment);
+        .then(executeCommand);
 }
-function getProductsByDepartment(answer) {
+function executeCommand(answer) {
     switch (answer.choice) {
 
         case "1. View Product Sales by Department":
@@ -42,37 +40,38 @@ function getProductsByDepartment(answer) {
             break;
 
         case "2. Create New Department":
-           addDepartment();
-           
+            addDepartment();
             break;
     }
 }
-function printSalesByDepartment(){
+function printSalesByDepartment() {
     db.query("SELECT departments.department_id,departments.department_name,departments.over_head_costs ,SUM(product_sales) AS product_sales, SUM(product_sales)-(over_head_costs) AS total_profit FROM departments LEFT JOIN products ON products.department_name = departments.department_name GROUP BY departments.department_id,departments.department_name,departments.over_head_costs ;", function (err, res) {
         if (err) throw err;
         console.log(res);
         db.end();
     });
 }
-function addDepartment(){
+function addDepartment() {
+    console.log("dima");
     inquirer
-    .prompt([{
-        name: "department_name",
-        type: "input",
-        message: "What is department name?"},
-     {
-      name: "over_head_costs",
-     type: "number",
-     message: "What is the over_head_costs?"
-    }])
-    .then(addNewProduct);
+        .prompt([{
+            name: "department_name",
+            type: "input",
+            message: "What is department name?"
+        },
+        {
+            name: "over_head_costs",
+            type: "number",
+            message: "What is the overhead costs?"
+        }])
+        .then(addNewProduct);
 }
-function addNewProduct(answer){
-db.query(" INSERT INTO departments (department_name,over_head_costs)"
-    +"VALUES(?,?);", [answer.department_name,answer.over_head_costs], function (err, res) {
-      if (err) throw err;
-      printSalesByDepartment();
-    });
+function addNewProduct(answer) {
+    db.query(" INSERT INTO departments (department_name,over_head_costs)"
+        + "VALUES(?,?);", [answer.department_name, answer.over_head_costs], function (err, res) {
+            if (err) throw err;
+            printSalesByDepartment();
+        });
 
-}  
+}
 printMenu();
