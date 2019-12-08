@@ -15,6 +15,8 @@ type How many units of the product you would like to buy.
 ![products_list](./images/products_list.png)
 Then it will give you the Total Cost Of The Purchase.
 ![products_list](./images/products_list.png)
+If you try to buy more than available quantity,you will get a message Insufficient quantity!
+![products_list](./images/noItems.png)
 * Manager View
 Select from the list of what you like to do.
 1.View Products for Sale 
